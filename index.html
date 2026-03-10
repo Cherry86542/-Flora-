@@ -2,7 +2,7 @@
 <html lang="zh">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
     <title>十二花神 · 本心测试</title>
     <!-- 字体与图标库 -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -14,6 +14,12 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            -webkit-text-size-adjust: 100%;
+            text-size-adjust: 100%;
+        }
+
+        html {
+            font-size: 16px;
         }
 
         body {
@@ -22,8 +28,9 @@
             color: #3d2c20;
             min-height: 100vh;
             display: flex;
+            align-items: center;
             justify-content: center;
-            padding: 1.5rem 1rem;
+            padding: 10px;
             position: relative;
         }
 
@@ -31,10 +38,10 @@
         .petal-bg {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background-image: url('data:image/svg+xml;utf8,<svg width="180" height="180" viewBox="0 0 180 180" xmlns="http://www.w3.org/2000/svg"><path d="M50 130 Q 30 100 55 75 Q 75 55 100 70" stroke="%23dbbca3" fill="none" stroke-width="1.5" opacity="0.25"/><circle cx="90" cy="90" r="18" fill="%23eacbb2" opacity="0.2"/><circle cx="130" cy="110" r="22" fill="%23dfb594" opacity="0.15"/><path d="M110 40 Q 135 55 125 85" stroke="%23cfa887" stroke-width="2" fill="none" opacity="0.2"/></svg>');
+            background-image: url('data:image/svg+xml;utf8,<svg width="150" height="150" viewBox="0 0 150 150" xmlns="http://www.w3.org/2000/svg"><path d="M40 110 Q 25 85 45 65 Q 60 50 80 60" stroke="%23dbbca3" fill="none" stroke-width="1.5" opacity="0.25"/><circle cx="75" cy="75" r="15" fill="%23eacbb2" opacity="0.2"/><circle cx="110" cy="95" r="18" fill="%23dfb594" opacity="0.15"/><path d="M95 35 Q 115 45 105 70" stroke="%23cfa887" stroke-width="2" fill="none" opacity="0.2"/></svg>');
             background-repeat: repeat;
-            background-size: 250px 250px;
-            opacity: 0.6;
+            background-size: 150px 150px;
+            opacity: 0.5;
             pointer-events: none;
             z-index: 0;
         }
@@ -42,317 +49,427 @@
         .test-card {
             position: relative;
             z-index: 10;
-            max-width: 1000px;
             width: 100%;
-            background: rgba(255, 249, 240, 0.85);
-            backdrop-filter: blur(12px);
-            border-radius: 3rem 3rem 2.5rem 2.5rem;
-            box-shadow: 0 30px 50px rgba(150, 90, 50, 0.25), inset 0 2px 8px #fff2e3;
+            max-width: 500px;
+            background: rgba(255, 249, 240, 0.95);
+            backdrop-filter: blur(8px);
+            border-radius: 30px;
+            box-shadow: 0 20px 40px rgba(150, 90, 50, 0.25), inset 0 2px 8px #fff2e3;
             border: 2px solid #efd5bf;
-            padding: 2rem 2rem 2.5rem;
+            padding: 20px 18px 25px;
+            margin: 0 auto;
         }
 
-        .title-section {
+        /* 启动页面样式 - 参考图片设计 */
+        .splash-screen {
             text-align: center;
-            margin-bottom: 2rem;
+            padding: 30px 15px 20px;
         }
-        .title-section h1 {
-            font-size: 3rem;
-            font-weight: 600;
+
+        .splash-title {
+            font-size: clamp(2.5rem, 10vw, 3.5rem);
+            font-weight: 700;
             color: #7a5b48;
             text-shadow: 3px 3px 0 #f5d5bc, 5px 7px 15px #b58e78;
+            margin-bottom: 20px;
+            letter-spacing: 4px;
+        }
+
+        .splash-subtitle {
+            font-size: clamp(1.3rem, 5vw, 1.8rem);
+            font-weight: 600;
+            color: #8a6652;
+            margin-bottom: 40px;
+            border-bottom: 2px dashed #dbaa8c;
+            padding-bottom: 15px;
+            display: inline-block;
+        }
+
+        .warning-box {
+            background: #f7e9df;
+            border: 2px solid #e6b595;
+            border-radius: 20px;
+            padding: 20px 15px;
+            margin: 40px 0 30px;
+            font-size: clamp(1rem, 4vw, 1.2rem);
+            color: #5f3e2e;
+            line-height: 1.6;
+            box-shadow: 0 5px 0 #c9aa93;
+        }
+
+        .warning-box i {
+            color: #b46f4c;
+            font-size: 1.5rem;
+            margin-right: 8px;
+        }
+
+        .start-btn {
+            background: #aa715a;
+            color: #fff8ed;
+            border: none;
+            border-radius: 60px;
+            padding: 18px 40px;
+            font-size: clamp(1.3rem, 5vw, 1.8rem);
+            font-weight: 700;
+            box-shadow: 0 8px 0 #633f30;
+            cursor: pointer;
+            transition: all 0.1s;
+            width: 100%;
+            max-width: 280px;
+            margin: 20px auto 30px;
+            display: block;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .start-btn:active {
+            transform: translateY(4px);
+            box-shadow: 0 4px 0 #633f30;
+        }
+
+        .splash-footer {
+            font-size: clamp(0.9rem, 3.5vw, 1rem);
+            color: #a68370;
+            margin-top: 20px;
+        }
+
+        /* 原有测试页面样式 */
+        .title-section {
+            text-align: center;
+            margin-bottom: 18px;
+        }
+        .title-section h1 {
+            font-size: clamp(1.6rem, 6vw, 2.2rem);
+            font-weight: 600;
+            color: #7a5b48;
+            text-shadow: 2px 2px 0 #f5d5bc, 3px 4px 8px #b58e78;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 0.8rem;
+            gap: 8px;
             flex-wrap: wrap;
         }
         .title-section h1 span {
             background: #b58b72;
             color: #fff7e7;
-            font-size: 2rem;
-            width: 65px;
-            height: 65px;
+            font-size: clamp(1.2rem, 4vw, 1.6rem);
+            width: clamp(35px, 10vw, 45px);
+            height: clamp(35px, 10vw, 45px);
             border-radius: 50%;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 7px 0 #755b4b;
+            box-shadow: 0 4px 0 #755b4b;
         }
         .subtitle {
             background: #fffcf7dd;
-            padding: 0.4rem 2rem;
+            padding: 6px 16px;
             border-radius: 40px;
-            font-size: 1.3rem;
+            font-size: clamp(0.85rem, 3.5vw, 1rem);
             color: #8a6652;
             display: inline-block;
             border: 1px solid #ebcfba;
         }
 
-        /* 测试区 */
         .quiz-panel {
             background: #fffff9f0;
-            border-radius: 2.5rem;
-            padding: 2rem 2.2rem;
+            border-radius: 24px;
+            padding: 18px 15px;
             border: 2px solid #e8ccb7;
-            box-shadow: 0 10px 0 #b58f78, 0 8px 20px #d2af9b;
-            margin: 1.8rem 0;
+            box-shadow: 0 6px 0 #b58f78, 0 4px 12px #d2af9b;
+            margin: 15px 0;
         }
 
         .q-meta {
             display: flex;
             justify-content: flex-end;
             align-items: center;
-            margin-bottom: 1.5rem;
+            margin-bottom: 15px;
         }
         .q-progress {
             background: #ebd9cb;
-            padding: 0.3rem 1.6rem;
+            padding: 5px 16px;
             border-radius: 30px;
-            font-size: 1.2rem;
+            font-size: clamp(0.9rem, 3.5vw, 1rem);
             font-weight: 500;
         }
 
         .question-text {
-            font-size: 1.9rem;
+            font-size: clamp(1.2rem, 5vw, 1.5rem);
             font-weight: 600;
             color: #4e382a;
-            margin-bottom: 2.2rem;
-            padding-left: 1.2rem;
-            border-left: 8px solid #ba8b72;
+            margin-bottom: 20px;
+            padding-left: 12px;
+            border-left: 5px solid #ba8b72;
+            line-height: 1.4;
+            word-break: break-word;
         }
 
         .options-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1.2rem;
+            grid-template-columns: 1fr;
+            gap: 12px;
         }
         .option-btn {
             background: #fff7ef;
             border: 2px solid #e7c5ae;
-            border-radius: 60px;
-            padding: 1rem 1.8rem;
-            font-size: 1.2rem;
+            border-radius: 50px;
+            padding: 14px 16px;
+            font-size: clamp(0.95rem, 4vw, 1.1rem);
             font-weight: 500;
             color: #423126;
             cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 1rem;
-            box-shadow: 0 5px 0 #c9aa93, 0 3px 8px #d8b9a5;
-            transition: all 0.15s;
+            gap: 12px;
+            box-shadow: 0 4px 0 #c9aa93, 0 2px 6px #d8b9a5;
+            transition: all 0.1s;
+            min-height: 60px;
+            width: 100%;
+            -webkit-tap-highlight-color: transparent;
+            word-break: break-word;
         }
         .option-btn i {
-            font-size: 1.5rem;
+            font-size: clamp(1.2rem, 5vw, 1.4rem);
             color: #b3643f;
-            width: 2rem;
+            width: 28px;
             text-align: center;
+            flex-shrink: 0;
         }
-        .option-btn:hover {
+        .option-btn:active {
             background: #ffe8da;
-            transform: translateY(-3px);
-            box-shadow: 0 8px 0 #b58368, 0 8px 15px #dbb6a2;
+            transform: translateY(2px);
+            box-shadow: 0 2px 0 #b58368;
         }
         .option-btn.selected {
             background: #ebccb8;
             border-color: #b46f4c;
-            box-shadow: 0 3px 0 #975f44;
-            transform: translateY(4px);
+            box-shadow: 0 2px 0 #975f44;
+            transform: translateY(2px);
         }
 
         .nav-buttons {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-top: 2.5rem;
+            margin-top: 20px;
+            flex-wrap: wrap;
+            gap: 8px;
         }
         .nav-btn {
             background: #fff9f0;
             border: none;
-            padding: 0.8rem 2rem;
-            border-radius: 50px;
-            font-size: 1.3rem;
+            padding: 12px 16px;
+            border-radius: 40px;
+            font-size: clamp(1rem, 4vw, 1.1rem);
             font-weight: 600;
             color: #634b3b;
             border: 1px solid #e1c1ab;
-            box-shadow: 0 5px 0 #b58d76;
+            box-shadow: 0 4px 0 #b58d76;
             cursor: pointer;
-            transition: 0.15s;
+            transition: 0.1s;
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            justify-content: center;
+            gap: 5px;
+            flex: 1 1 auto;
+            min-width: 80px;
+            -webkit-tap-highlight-color: transparent;
         }
-        .nav-btn:hover:not(:disabled) {
+        .nav-btn:active:not(:disabled) {
             background: #fff2e6;
-            transform: translateY(-2px);
-            box-shadow: 0 7px 0 #9e7561;
+            transform: translateY(2px);
+            box-shadow: 0 2px 0 #9e7561;
         }
         .nav-btn:disabled {
             opacity: 0.3;
-            box-shadow: 0 3px 0 #a69990;
+            box-shadow: 0 2px 0 #a69990;
             pointer-events: none;
         }
         .view-result-btn {
             background: #aa715a;
             color: #fff8ed;
             border: 1px solid #eccbb6;
-            box-shadow: 0 6px 0 #633f30;
-            font-size: 1.5rem;
-            padding: 0.8rem 2.5rem;
+            box-shadow: 0 4px 0 #633f30;
+            font-size: clamp(1.05rem, 4.5vw, 1.2rem);
+            padding: 12px 20px;
+            flex: 2 1 auto;
         }
 
-        /* 结果面板 - 严格按照图片格式 */
         .result-panel {
             background-size: cover;
             background-position: center 30%;
             background-repeat: no-repeat;
-            border-radius: 2.5rem;
-            padding: 2rem 2rem 2.5rem;
+            border-radius: 24px;
+            padding: 18px 15px 20px;
             border: 3px solid #fbebdd;
-            box-shadow: 0 20px 30px #ac8a7490, inset 0 0 0 2px #fffcf5;
-            margin-top: 1.5rem;
+            box-shadow: 0 15px 25px #ac8a7490, inset 0 0 0 2px #fffcf5;
+            margin-top: 10px;
             position: relative;
         }
         .result-panel::before {
             content: '';
             position: absolute;
             inset: 0;
-            background: rgba(255, 245, 235, 0.5);
+            background: rgba(255, 245, 235, 0.6);
             backdrop-filter: blur(2px);
-            border-radius: 2.5rem;
+            border-radius: 24px;
         }
         .result-content {
             position: relative;
             z-index: 2;
             background: #fffffff2;
-            padding: 2rem 2.5rem;
-            border-radius: 2rem;
+            padding: 18px 15px;
+            border-radius: 20px;
             border: 1px solid #efcfb8;
-            box-shadow: 0 10px 0 #ab846d;
+            box-shadow: 0 5px 0 #ab846d;
         }
         
-        /* 图片中的格式 - 小花标和人物 */
         .flower-badge {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 1rem;
-            margin-bottom: 1rem;
+            gap: 12px;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
         }
         .flower-icon-small {
-            font-size: 2.5rem;
+            font-size: clamp(1.8rem, 7vw, 2.2rem);
             background: #f5e1d3;
-            width: 60px;
-            height: 60px;
+            width: clamp(45px, 12vw, 55px);
+            height: clamp(45px, 12vw, 55px);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             border: 3px solid #b68367;
             color: #9d5f42;
+            flex-shrink: 0;
         }
         .flower-name {
-            font-size: 2.2rem;
+            font-size: clamp(1.3rem, 5.5vw, 1.7rem);
             font-weight: 700;
             color: #402e21;
+            text-align: center;
+            word-break: break-word;
         }
         
         .result-quote {
-            font-size: 1.3rem;
+            font-size: clamp(0.95rem, 4vw, 1.1rem);
             font-style: italic;
             color: #5f3e2e;
             background: #f7e9df;
-            padding: 1.2rem 2rem;
-            border-radius: 2rem;
-            margin: 1.5rem 0;
+            padding: 14px 16px;
+            border-radius: 20px;
+            margin: 15px 0;
             text-align: center;
             border: 1px solid #ecc3aa;
-            line-height: 1.8;
+            line-height: 1.5;
+            word-break: break-word;
         }
         .result-quote small {
             display: block;
-            margin-top: 0.5rem;
-            font-size: 1rem;
+            margin-top: 8px;
+            font-size: 0.85rem;
             color: #8b5e48;
         }
         
         .result-section {
-            margin: 1.8rem 0;
+            margin: 18px 0;
         }
         .section-title {
-            font-size: 1.6rem;
+            font-size: clamp(1.2rem, 5vw, 1.4rem);
             font-weight: 700;
             color: #633f30;
-            margin-bottom: 0.8rem;
-            border-left: 6px solid #c1785a;
-            padding-left: 1rem;
+            margin-bottom: 10px;
+            border-left: 5px solid #c1785a;
+            padding-left: 12px;
         }
         .section-list {
             list-style: none;
-            padding: 0 0.5rem;
+            padding: 0 5px;
         }
         .section-list li {
-            font-size: 1.2rem;
-            margin-bottom: 0.6rem;
+            font-size: clamp(0.95rem, 4vw, 1.05rem);
+            margin-bottom: 8px;
             display: flex;
-            align-items: baseline;
-            gap: 0.5rem;
+            align-items: flex-start;
+            gap: 8px;
+            line-height: 1.5;
+            word-break: break-word;
         }
         .section-list li i {
             color: #b46f4c;
-            font-size: 1.3rem;
-            width: 1.8rem;
+            font-size: 1.1rem;
+            width: 22px;
+            flex-shrink: 0;
+            margin-top: 2px;
         }
         .section-text {
-            font-size: 1.2rem;
-            line-height: 1.7;
+            font-size: clamp(0.95rem, 4vw, 1.05rem);
+            line-height: 1.6;
             background: #fcf1e6;
-            padding: 1rem 1.5rem;
-            border-radius: 1rem;
-            margin: 0.8rem 0;
+            padding: 14px 16px;
+            border-radius: 16px;
+            margin: 12px 0;
+            word-break: break-word;
         }
         .growth-box {
             background: #fff2e7;
             border: 2px solid #e6b595;
-            border-radius: 1.5rem;
-            padding: 1.2rem 1.8rem;
-            margin: 1.2rem 0;
+            border-radius: 20px;
+            padding: 16px 18px;
+            margin: 15px 0;
         }
         .growth-box p {
-            font-size: 1.2rem;
-            margin-bottom: 0.5rem;
+            font-size: clamp(0.95rem, 4vw, 1.05rem);
+            margin-bottom: 10px;
             display: flex;
-            align-items: center;
-            gap: 0.8rem;
+            align-items: flex-start;
+            gap: 8px;
+            line-height: 1.5;
+            word-break: break-word;
+        }
+        .growth-box p i {
+            flex-shrink: 0;
+            margin-top: 2px;
         }
         .qr-sim {
-            background: #e9d9cd;
-            height: 100px;
-            width: 100px;
-            border-radius: 50%;
-            margin: 1rem auto;
+            background: #ffffff;
+            height: 120px;
+            width: 120px;
+            border-radius: 20px;
+            margin: 15px auto;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 2.5rem;
-            color: #7a5b48;
-            border: 3px solid #b58b72;
+            font-size: 3rem;
+            color: #2c1e16;
+            border: 4px solid #b58b72;
+            box-shadow: 0 5px 0 #7a5b48;
+        }
+        .qr-sim i {
+            font-size: 3.5rem;
+            color: #4a3729;
         }
         .stats {
-            font-size: 1.2rem;
+            font-size: clamp(0.95rem, 4vw, 1.05rem);
             background: #ecd7c7;
-            padding: 0.8rem 1.5rem;
-            border-radius: 40px;
+            padding: 12px 16px;
+            border-radius: 30px;
             text-align: center;
-            margin: 1rem 0;
+            margin: 15px 0;
+            line-height: 1.5;
+            word-break: break-word;
         }
         .footer-links {
-            font-size: 1.2rem;
+            font-size: clamp(0.95rem, 4vw, 1.05rem);
             color: #4b3527;
             background: #f3e4d9;
-            padding: 1rem 1.8rem;
-            border-radius: 1rem;
-            margin-top: 1.5rem;
+            padding: 14px 18px;
+            border-radius: 16px;
+            margin-top: 18px;
+            line-height: 1.6;
+            word-break: break-word;
         }
 
         .hidden {
@@ -361,14 +478,31 @@
 
         footer {
             text-align: center;
-            margin-top: 2rem;
+            margin-top: 20px;
             color: #a68370;
-            font-size: 1.2rem;
+            font-size: clamp(0.85rem, 3.5vw, 0.95rem);
         }
 
-        @media (max-width: 700px) {
-            .options-grid { grid-template-columns: 1fr; }
-            .question-text { font-size: 1.5rem; }
+        @media (max-width: 320px) {
+            .test-card {
+                padding: 15px 12px 20px;
+            }
+            .option-btn {
+                padding: 12px 12px;
+                min-height: 50px;
+            }
+            .nav-btn {
+                padding: 10px 8px;
+            }
+        }
+
+        @media (min-width: 768px) {
+            .test-card {
+                max-width: 600px;
+            }
+            .options-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
         }
     </style>
 </head>
@@ -376,15 +510,32 @@
 <div class="petal-bg"></div>
 
 <div class="test-card">
-    <div class="title-section">
-        <h1>
-            <span>🌸</span> 十二花神 · 本心测试 <span>🌸</span>
-        </h1>
-        <div class="subtitle">三十六问 · 寻访花魂</div>
+    <!-- 启动页面 (默认显示) -->
+    <div id="splashSection">
+        <div class="splash-screen">
+            <div class="splash-title">十二花神</div>
+            <div class="splash-subtitle">你的守护花神</div>
+            
+            <div class="warning-box">
+                <i class="fa-regular fa-circle-exclamation"></i>
+                预警：个人能力有限，测试仅供参<br>考。
+            </div>
+
+            <button class="start-btn" id="startTestBtn">开始测试</button>
+
+            <div class="splash-footer">十二花神</div>
+        </div>
     </div>
 
-    <!-- 测试区域（默认显示） -->
-    <div id="quizSection">
+    <!-- 测试区域（初始隐藏） -->
+    <div id="quizSection" class="hidden">
+        <div class="title-section">
+            <h1>
+                <span>🌸</span> 十二花神 · 本心测试 <span>🌸</span>
+            </h1>
+            <div class="subtitle">三十六问 · 寻访花魂</div>
+        </div>
+
         <div class="quiz-panel">
             <div class="q-meta">
                 <div class="q-progress" id="progressText">第 1 / 36 题</div>
@@ -403,18 +554,32 @@
     <!-- 结果展示区域（初始隐藏） -->
     <div id="resultSection" class="result-panel hidden">
         <div class="result-content" id="resultContent">
-            <!-- 内容由JS动态生成，严格按照图片格式，包含小花标和人物 -->
+            <!-- 内容由JS动态生成 -->
         </div>
     </div>
 
-    <footer>
+    <footer id="mainFooter" class="hidden">
         <i class="fa-regular fa-flower"></i> 百花各有其性 · 君属哪一仙 <i class="fa-regular fa-flower"></i>
     </footer>
 </div>
 
 <script>
     (function() {
-        // ----- 36道题目 (选项已去掉花名) -----
+        // 获取DOM元素
+        const splashSection = document.getElementById('splashSection');
+        const quizSection = document.getElementById('quizSection');
+        const resultSection = document.getElementById('resultSection');
+        const mainFooter = document.getElementById('mainFooter');
+        const startBtn = document.getElementById('startTestBtn');
+
+        // 开始测试按钮点击事件
+        startBtn.addEventListener('click', () => {
+            splashSection.classList.add('hidden');
+            quizSection.classList.remove('hidden');
+            mainFooter.classList.remove('hidden');
+        });
+
+        // ----- 以下为原有的测试逻辑 -----
         const questions = [
             // 梅花组
             { text: "遇到困难时，你的第一反应是——", options: [
@@ -646,10 +811,8 @@
             ] }
         ];
 
-        // 十二花神顺序
         const flowerOrder = ["梅花","杏花","桃花","牡丹","石榴","荷花","葵花","桂花","菊花","芙蓉","山茶","水仙"];
 
-        // ----- 严格按照12张图片内容构建花神数据，包含人物名称和小花标 -----
         const flowerDetails = {
             "梅花": {
                 name: "梅花花神 · 江采萍",
@@ -980,11 +1143,9 @@
             }
         };
 
-        // 答案数组
         let answers = new Array(36).fill(null);
         let currentIdx = 0;
 
-        // DOM
         const progressEl = document.getElementById('progressText');
         const questionEl = document.getElementById('questionDisplay');
         const optionsEl = document.getElementById('optionsContainer');
@@ -992,8 +1153,6 @@
         const nextBtn = document.getElementById('nextBtn');
         const viewBtn = document.getElementById('viewResultBtn');
         const resetBtn = document.getElementById('resetBtn');
-        const quizSec = document.getElementById('quizSection');
-        const resultSec = document.getElementById('resultSection');
         const resultContent = document.getElementById('resultContent');
 
         function renderQuestion(index) {
@@ -1101,10 +1260,10 @@
             const topFlower = calculateTopFlower();
             const detail = flowerDetails[topFlower];
             resultContent.innerHTML = buildResultHTML(topFlower);
-            resultSec.style.backgroundImage = detail.bg;
+            resultSection.style.backgroundImage = detail.bg;
 
-            quizSec.classList.add('hidden');
-            resultSec.classList.remove('hidden');
+            quizSection.classList.add('hidden');
+            resultSection.classList.remove('hidden');
         }
 
         viewBtn.addEventListener('click', () => {
@@ -1116,11 +1275,20 @@
             answers = new Array(36).fill(null);
             currentIdx = 0;
             renderQuestion(0);
-            quizSec.classList.remove('hidden');
-            resultSec.classList.add('hidden');
+            quizSection.classList.remove('hidden');
+            resultSection.classList.add('hidden');
+            splashSection.classList.add('hidden');
+            mainFooter.classList.remove('hidden');
         });
 
-        renderQuestion(0);
+        // 初始不加载题目，等点击开始后再加载
+        // 但需要保证重置功能正常
+        // 预加载第一题但不显示
+        setTimeout(() => {
+            if (!quizSection.classList.contains('hidden')) {
+                renderQuestion(0);
+            }
+        }, 100);
     })();
 </script>
 </body>
