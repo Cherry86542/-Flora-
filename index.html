@@ -1,0 +1,1148 @@
+!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>十二花神 · 本心测试</title>
+    <!-- 字体与图标库 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #fdf3e9;
+            font-family: 'Quicksand', sans-serif;
+            color: #3d2c20;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            padding: 0.8rem 0.5rem;
+            position: relative;
+        }
+
+        /* 背景花瓣纹理 - 移动端调小 */
+        .petal-bg {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: url('data:image/svg+xml;utf8,<svg width="150" height="150" viewBox="0 0 150 150" xmlns="http://www.w3.org/2000/svg"><path d="M40 110 Q 25 85 45 65 Q 60 50 80 60" stroke="%23dbbca3" fill="none" stroke-width="1.5" opacity="0.25"/><circle cx="75" cy="75" r="15" fill="%23eacbb2" opacity="0.2"/><circle cx="110" cy="95" r="18" fill="%23dfb594" opacity="0.15"/><path d="M95 35 Q 115 45 105 70" stroke="%23cfa887" stroke-width="2" fill="none" opacity="0.2"/></svg>');
+            background-repeat: repeat;
+            background-size: 150px 150px;
+            opacity: 0.5;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .test-card {
+            position: relative;
+            z-index: 10;
+            max-width: 600px;
+            width: 100%;
+            background: rgba(255, 249, 240, 0.92);
+            backdrop-filter: blur(8px);
+            border-radius: 1.8rem 1.8rem 1.8rem 1.8rem;
+            box-shadow: 0 15px 30px rgba(150, 90, 50, 0.2), inset 0 2px 5px #fff2e3;
+            border: 2px solid #efd5bf;
+            padding: 1rem 0.8rem 1.5rem;
+        }
+
+        .title-section {
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+        .title-section h1 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #7a5b48;
+            text-shadow: 2px 2px 0 #f5d5bc, 3px 4px 8px #b58e78;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+            flex-wrap: wrap;
+        }
+        .title-section h1 span {
+            background: #b58b72;
+            color: #fff7e7;
+            font-size: 1.3rem;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 0 #755b4b;
+        }
+        .subtitle {
+            background: #fffcf7dd;
+            padding: 0.2rem 1rem;
+            border-radius: 30px;
+            font-size: 0.9rem;
+            color: #8a6652;
+            display: inline-block;
+            border: 1px solid #ebcfba;
+        }
+
+        /* 测试区 */
+        .quiz-panel {
+            background: #fffff9f0;
+            border-radius: 1.5rem;
+            padding: 1rem 0.8rem;
+            border: 2px solid #e8ccb7;
+            box-shadow: 0 6px 0 #b58f78, 0 4px 12px #d2af9b;
+            margin: 0.8rem 0;
+        }
+
+        .q-meta {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            margin-bottom: 0.8rem;
+        }
+        .q-progress {
+            background: #ebd9cb;
+            padding: 0.2rem 1rem;
+            border-radius: 30px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .question-text {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #4e382a;
+            margin-bottom: 1.2rem;
+            padding-left: 0.6rem;
+            border-left: 5px solid #ba8b72;
+            line-height: 1.4;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 0.7rem;
+        }
+        .option-btn {
+            background: #fff7ef;
+            border: 2px solid #e7c5ae;
+            border-radius: 40px;
+            padding: 0.7rem 1rem;
+            font-size: 1rem;
+            font-weight: 500;
+            color: #423126;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+            box-shadow: 0 3px 0 #c9aa93, 0 2px 4px #d8b9a5;
+            transition: all 0.1s;
+            min-height: 55px;
+            width: 100%;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .option-btn i {
+            font-size: 1.2rem;
+            color: #b3643f;
+            width: 1.6rem;
+            text-align: center;
+        }
+        .option-btn:active {
+            background: #ffe8da;
+            transform: translateY(2px);
+            box-shadow: 0 1px 0 #b58368;
+        }
+        .option-btn.selected {
+            background: #ebccb8;
+            border-color: #b46f4c;
+            box-shadow: 0 1px 0 #975f44;
+            transform: translateY(2px);
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+        }
+        .nav-btn {
+            background: #fff9f0;
+            border: none;
+            padding: 0.6rem 1rem;
+            border-radius: 40px;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #634b3b;
+            border: 1px solid #e1c1ab;
+            box-shadow: 0 3px 0 #b58d76;
+            cursor: pointer;
+            transition: 0.1s;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            flex: 1 1 auto;
+            justify-content: center;
+            min-width: 70px;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .nav-btn:active:not(:disabled) {
+            background: #fff2e6;
+            transform: translateY(2px);
+            box-shadow: 0 1px 0 #9e7561;
+        }
+        .nav-btn:disabled {
+            opacity: 0.3;
+            box-shadow: 0 1px 0 #a69990;
+            pointer-events: none;
+        }
+        .view-result-btn {
+            background: #aa715a;
+            color: #fff8ed;
+            border: 1px solid #eccbb6;
+            box-shadow: 0 3px 0 #633f30;
+            font-size: 1.1rem;
+            padding: 0.6rem 1.2rem;
+            flex: 2 1 auto;
+        }
+
+        /* 结果面板 - 移动端优化 */
+        .result-panel {
+            background-size: cover;
+            background-position: center 30%;
+            background-repeat: no-repeat;
+            border-radius: 1.8rem;
+            padding: 1rem 0.8rem 1.2rem;
+            border: 3px solid #fbebdd;
+            box-shadow: 0 12px 20px #ac8a7490, inset 0 0 0 2px #fffcf5;
+            margin-top: 0.8rem;
+            position: relative;
+        }
+        .result-panel::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(255, 245, 235, 0.6);
+            backdrop-filter: blur(2px);
+            border-radius: 1.8rem;
+        }
+        .result-content {
+            position: relative;
+            z-index: 2;
+            background: #fffffff2;
+            padding: 1rem 1rem;
+            border-radius: 1.3rem;
+            border: 1px solid #efcfb8;
+            box-shadow: 0 5px 0 #ab846d;
+        }
+        
+        /* 小花标和人物 - 移动端优化 */
+        .flower-badge {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.6rem;
+            margin-bottom: 0.6rem;
+            flex-wrap: wrap;
+        }
+        .flower-icon-small {
+            font-size: 1.8rem;
+            background: #f5e1d3;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 3px solid #b68367;
+            color: #9d5f42;
+        }
+        .flower-name {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #402e21;
+            text-align: center;
+        }
+        
+        .result-quote {
+            font-size: 1rem;
+            font-style: italic;
+            color: #5f3e2e;
+            background: #f7e9df;
+            padding: 0.8rem 1rem;
+            border-radius: 1.5rem;
+            margin: 1rem 0;
+            text-align: center;
+            border: 1px solid #ecc3aa;
+            line-height: 1.5;
+        }
+        .result-quote small {
+            display: block;
+            margin-top: 0.3rem;
+            font-size: 0.85rem;
+            color: #8b5e48;
+        }
+        
+        .result-section {
+            margin: 1.2rem 0;
+        }
+        .section-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #633f30;
+            margin-bottom: 0.6rem;
+            border-left: 5px solid #c1785a;
+            padding-left: 0.8rem;
+        }
+        .section-list {
+            list-style: none;
+            padding: 0 0.3rem;
+        }
+        .section-list li {
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: baseline;
+            gap: 0.4rem;
+            line-height: 1.4;
+        }
+        .section-list li i {
+            color: #b46f4c;
+            font-size: 1.1rem;
+            width: 1.5rem;
+            flex-shrink: 0;
+        }
+        .section-text {
+            font-size: 1rem;
+            line-height: 1.6;
+            background: #fcf1e6;
+            padding: 0.8rem 1rem;
+            border-radius: 1rem;
+            margin: 0.6rem 0;
+        }
+        .growth-box {
+            background: #fff2e7;
+            border: 2px solid #e6b595;
+            border-radius: 1.3rem;
+            padding: 1rem 1.2rem;
+            margin: 1rem 0;
+        }
+        .growth-box p {
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            line-height: 1.4;
+        }
+        .growth-box p i {
+            flex-shrink: 0;
+        }
+        .qr-sim {
+            background: #ffffff;
+            height: 120px;
+            width: 120px;
+            border-radius: 20px;
+            margin: 1rem auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: #2c1e16;
+            border: 4px solid #b58b72;
+            box-shadow: 0 5px 0 #7a5b48;
+        }
+        .qr-sim i {
+            font-size: 3.5rem;
+            color: #4a3729;
+        }
+        .stats {
+            font-size: 1rem;
+            background: #ecd7c7;
+            padding: 0.6rem 1rem;
+            border-radius: 30px;
+            text-align: center;
+            margin: 0.8rem 0;
+            line-height: 1.4;
+        }
+        .footer-links {
+            font-size: 1rem;
+            color: #4b3527;
+            background: #f3e4d9;
+            padding: 0.8rem 1.2rem;
+            border-radius: 1rem;
+            margin-top: 1.2rem;
+            line-height: 1.5;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 1.5rem;
+            color: #a68370;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+<div class="petal-bg"></div>
+
+<div class="test-card">
+    <div class="title-section">
+        <h1>
+            <span>🌸</span> 十二花神 · 本心测试 <span>🌸</span>
+        </h1>
+        <div class="subtitle">三十六问 · 寻访花魂</div>
+    </div>
+
+    <!-- 测试区域（默认显示） -->
+    <div id="quizSection">
+        <div class="quiz-panel">
+            <div class="q-meta">
+                <div class="q-progress" id="progressText">第 1 / 36 题</div>
+            </div>
+            <div class="question-text" id="questionDisplay">加载题目中...</div>
+            <div class="options-grid" id="optionsContainer"></div>
+
+            <div class="nav-buttons">
+                <button class="nav-btn" id="prevBtn"><i class="fa-solid fa-chevron-left"></i> 上一题</button>
+                <button class="nav-btn" id="nextBtn">下一题 <i class="fa-solid fa-chevron-right"></i></button>
+                <button class="nav-btn view-result-btn" id="viewResultBtn">🌸 查看花神</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 结果展示区域（初始隐藏） -->
+    <div id="resultSection" class="result-panel hidden">
+        <div class="result-content" id="resultContent">
+            <!-- 内容由JS动态生成 -->
+        </div>
+    </div>
+
+    <footer>
+        <i class="fa-regular fa-flower"></i> 百花各有其性 · 君属哪一仙 <i class="fa-regular fa-flower"></i>
+    </footer>
+</div>
+
+<script>
+    (function() {
+        // ----- 36道题目 (选项已去掉花名) -----
+        const questions = [
+            // 梅花组
+            { text: "遇到困难时，你的第一反应是——", options: [
+                { text: "独自冷静分析，寻找解决方案", flower: "梅花" },
+                { text: "找信任的人倾诉，寻求情感支持", flower: "杏花" },
+                { text: "快速行动，在尝试中找到出路", flower: "桃花" },
+                { text: "查阅资料，确保准备充分再行动", flower: "桂花" }
+            ] },
+            { text: "面对长期压力，你通常——", options: [
+                { text: "默默坚持直到突破", flower: "梅花" },
+                { text: "调整目标，寻找更轻松的替代方案", flower: "芙蓉" },
+                { text: "把压力转化为动力，越挫越勇", flower: "牡丹" },
+                { text: "制定详细计划，按部就班推进", flower: "山茶" }
+            ] },
+            { text: "在团队陷入混乱时，你更愿意——", options: [
+                { text: "做定海神针，在混乱中保持冷静判断", flower: "梅花" },
+                { text: "活跃气氛，带动团队情绪升温", flower: "桃花" },
+                { text: "协调各方，寻找折中方案", flower: "芙蓉" },
+                { text: "坚持原则，不因压力妥协底线", flower: "菊花" }
+            ] },
+            // 杏花组
+            { text: "朋友向你倾诉烦恼时，你通常——", options: [
+                { text: "深深共情，甚至能感受到对方的情绪重量", flower: "杏花" },
+                { text: "理性分析，帮助对方找到解决办法", flower: "梅花" },
+                { text: "分享类似经历，让TA知道不孤单", flower: "桃花" },
+                { text: "默默陪伴，用行动表达关心", flower: "桂花" }
+            ] },
+            { text: "在社交场合，你更在意——", options: [
+                { text: "氛围是否和谐，有没有人感到被冷落", flower: "杏花" },
+                { text: "目标是否达成，效率是否足够高", flower: "葵花" },
+                { text: "自己是否有存在感，能否展现魅力", flower: "牡丹" },
+                { text: "能否建立深度连接，而非泛泛之交", flower: "荷花" }
+            ] },
+            { text: "当他人情绪激烈时，你——", options: [
+                { text: "容易被感染，情绪随之起伏", flower: "杏花" },
+                { text: "保持冷静，帮助对方平复", flower: "梅花" },
+                { text: "用热情带动，转移注意力", flower: "桃花" },
+                { text: "暂时回避，等冷静后再沟通", flower: "水仙" }
+            ] },
+            // 桃花组
+            { text: "进入新环境，你通常——", options: [
+                { text: "快速主动认识新朋友，扩大社交圈", flower: "桃花" },
+                { text: "先观察一段时间，再决定深入交往", flower: "桂花" },
+                { text: "找到关键人物，建立核心关系", flower: "牡丹" },
+                { text: "保持自然，不刻意经营关系", flower: "菊花" }
+            ] },
+            { text: "你更享受哪种状态——", options: [
+                { text: "被朋友环绕，热闹的聚会", flower: "桃花" },
+                { text: "三五知己，深度的对话", flower: "荷花" },
+                { text: "成为焦点，带动全场气氛", flower: "牡丹" },
+                { text: "独处充电，享受宁静时光", flower: "水仙" }
+            ] },
+            { text: "表达情感时，你倾向于——", options: [
+                { text: "直接热烈，让对方明确感受到", flower: "桃花" },
+                { text: "含蓄内敛，用行动代替言语", flower: "菊花" },
+                { text: "优雅得体，保持适当距离", flower: "桂花" },
+                { text: "深思熟虑，确保真诚准确", flower: "荷花" }
+            ] },
+            // 牡丹组
+            { text: "面对展示自我的机会，你通常——", options: [
+                { text: "欣然接受，相信自己的价值", flower: "牡丹" },
+                { text: "有些犹豫，担心准备不够完美", flower: "桂花" },
+                { text: "先评估风险，再决定是否参与", flower: "芙蓉" },
+                { text: "让更适合的人去，自己不抢风头", flower: "水仙" }
+            ] },
+            { text: "当他人质疑你的能力时，你——", options: [
+                { text: "用事实和成果回应，证明给自己看", flower: "牡丹" },
+                { text: "反思是否确实有改进空间", flower: "山茶" },
+                { text: "理解对方立场，寻找共识", flower: "芙蓉" },
+                { text: "坚持原则，不为他人的质疑动摇", flower: "菊花" }
+            ] },
+            { text: "你更认同哪种人生态度——", options: [
+                { text: "敢于站在舞台中央，绽放光芒", flower: "牡丹" },
+                { text: "甘当绿叶，在幕后默默成就他人", flower: "桂花" },
+                { text: "灵活应变，在不同角色中切换", flower: "芙蓉" },
+                { text: "淡泊名利，追求内心的平静", flower: "荷花" }
+            ] },
+            // 石榴组
+            { text: "面对空白画布/新任务，你感到——", options: [
+                { text: "兴奋，迫不及待想注入自己的创意", flower: "石榴" },
+                { text: "谨慎，先研究成功案例再行动", flower: "山茶" },
+                { text: "焦虑，担心无法达到预期", flower: "水仙" },
+                { text: "平静，把它当作普通任务完成", flower: "菊花" }
+            ] },
+            { text: "你更享受创作过程的——", options: [
+                { text: "灵感迸发的瞬间，想法喷涌而出", flower: "石榴" },
+                { text: "精雕细琢的打磨，不断完善细节", flower: "水仙" },
+                { text: "作品完成时，获得认可的满足", flower: "牡丹" },
+                { text: "与他人协作，碰撞出新火花", flower: "桃花" }
+            ] },
+            { text: "当创意被否定时，你——", options: [
+                { text: "迅速产生新想法，继续尝试", flower: "石榴" },
+                { text: "坚持原有方案，争取说服对方", flower: "葵花" },
+                { text: "理解反馈，调整方向再出发", flower: "芙蓉" },
+                { text: "暂时搁置，等待合适时机", flower: "桂花" }
+            ] },
+            // 荷花组
+            { text: "当周围喧嚣嘈杂时，你——", options: [
+                { text: "感到烦躁，需要独处空间恢复平静", flower: "荷花" },
+                { text: "不受影响，能专注于自己的事情", flower: "梅花" },
+                { text: "尝试融入，参与热闹的活动", flower: "桃花" },
+                { text: "观察他人，从中获取能量", flower: "杏花" }
+            ] },
+            { text: "做决定前，你通常——", options: [
+                { text: "深思熟虑，确保内心真正认同", flower: "荷花" },
+                { text: "快速决断，边做边调整", flower: "桃花" },
+                { text: "收集信息，分析利弊后再定", flower: "桂花" },
+                { text: "听从直觉，相信第一感觉", flower: "石榴" }
+            ] },
+            { text: "你更向往的生活状态——", options: [
+                { text: "出淤泥而不染，保持精神独立", flower: "荷花" },
+                { text: "融入烟火人间，体验丰富情感", flower: "杏花" },
+                { text: "不断挑战，在变化中成长", flower: "芙蓉" },
+                { text: "深耕一隅，建立稳固根基", flower: "山茶" }
+            ] },
+            // 葵花组
+            { text: "一旦确定目标，你——", options: [
+                { text: "像向日葵追日，全力以赴不动摇", flower: "葵花" },
+                { text: "保持灵活，根据情况调整方向", flower: "芙蓉" },
+                { text: "设定备选方案，以防万一", flower: "桂花" },
+                { text: "顺其自然，不强求结果", flower: "菊花" }
+            ] },
+            { text: "面对'更好但不确定'的机会，你——", options: [
+                { text: "坚持原有选择，完成比完美重要", flower: "葵花" },
+                { text: "勇于转换赛道，拥抱新可能", flower: "石榴" },
+                { text: "深入调研，用数据支撑决策", flower: "梅花" },
+                { text: "咨询信任的人，参考他们的建议", flower: "杏花" }
+            ] },
+            { text: "当进度落后时，你——", options: [
+                { text: "加班加点，确保按时完成", flower: "葵花" },
+                { text: "调整计划，优先保证质量", flower: "山茶" },
+                { text: "寻求资源支持，分担任务", flower: "牡丹" },
+                { text: "接受延期，避免过度消耗", flower: "荷花" }
+            ] },
+            // 桂花组
+            { text: "取得成就时，你更倾向于——", options: [
+                { text: "默默欣喜，不主动宣扬", flower: "桂花" },
+                { text: "适当分享，获得认可和鼓励", flower: "牡丹" },
+                { text: "与团队庆祝，感谢他人支持", flower: "桃花" },
+                { text: "记录反思，为下一次做准备", flower: "梅花" }
+            ] },
+            { text: "在陌生场合，你通常——", options: [
+                { text: "先倾听观察，再选择性表达", flower: "桂花" },
+                { text: "主动破冰，快速建立连接", flower: "桃花" },
+                { text: "找到关键人物，精准社交", flower: "牡丹" },
+                { text: "保持低调，等待被邀请参与", flower: "水仙" }
+            ] },
+            { text: "你更相信——", options: [
+                { text: "酒香不怕巷子深，实力终会被看见", flower: "桂花" },
+                { text: "主动争取才能获得机会", flower: "牡丹" },
+                { text: "时机成熟，自然水到渠成", flower: "菊花" },
+                { text: "灵活应变，抓住每个可能性", flower: "芙蓉" }
+            ] },
+            // 菊花组
+            { text: "面对名利诱惑，你——", options: [
+                { text: "坚守原则，宁可失去也不妥协", flower: "菊花" },
+                { text: "灵活权衡，在底线内争取利益", flower: "芙蓉" },
+                { text: "积极争取，用实力赢得认可", flower: "牡丹" },
+                { text: "淡然处之，不刻意追求也不拒绝", flower: "荷花" }
+            ] },
+            { text: "你更欣赏哪种人生——", options: [
+                { text: "宁可枝头抱香死，不随落叶舞秋风", flower: "菊花" },
+                { text: "好风凭借力，送我上青云", flower: "牡丹" },
+                { text: "随遇而安，顺应自然变化", flower: "芙蓉" },
+                { text: "默默耕耘，时间证明价值", flower: "桂花" }
+            ] },
+            { text: "当理想与现实冲突时，你——", options: [
+                { text: "坚守理想，哪怕付出代价", flower: "菊花" },
+                { text: "调整理想，使其更接地气", flower: "芙蓉" },
+                { text: "分阶段实现，曲线救国", flower: "山茶" },
+                { text: "重新审视，确认真正的追求", flower: "荷花" }
+            ] },
+            // 芙蓉组
+            { text: "计划突然被打乱，你——", options: [
+                { text: "快速调整，像木芙蓉一日三变", flower: "芙蓉" },
+                { text: "需要平复情绪，再重新规划", flower: "荷花" },
+                { text: "坚持原计划，尽可能挽回", flower: "葵花" },
+                { text: "借机彻底推翻，重新设计", flower: "石榴" }
+            ] },
+            { text: "你更擅长——", options: [
+                { text: "根据环境变化，灵活切换角色", flower: "芙蓉" },
+                { text: "深耕一个领域，建立专业壁垒", flower: "山茶" },
+                { text: "带领团队，统一方向前进", flower: "牡丹" },
+                { text: "独立工作，保持专注高效", flower: "梅花" }
+            ] },
+            { text: "面对不同观点，你通常——", options: [
+                { text: "理解各方立场，寻找折中方案", flower: "芙蓉" },
+                { text: "坚持自己认为正确的方向", flower: "菊花" },
+                { text: "用事实和数据说服对方", flower: "梅花" },
+                { text: "尊重差异，不强行改变他人", flower: "荷花" }
+            ] },
+            // 山茶组
+            { text: "你更享受——", options: [
+                { text: "长期投入一件事，看时间复利", flower: "山茶" },
+                { text: "不断尝试新领域，保持新鲜感", flower: "石榴" },
+                { text: "在多个项目中灵活切换", flower: "芙蓉" },
+                { text: "根据兴趣，随性而为", flower: "水仙" }
+            ] },
+            { text: "面对短期诱惑与长期目标冲突——", options: [
+                { text: "坚守长期价值", flower: "山茶" },
+                { text: "活在当下，及时行乐", flower: "桃花" },
+                { text: "寻找平衡，适度满足当下", flower: "荷花" },
+                { text: "评估风险，小步试错", flower: "桂花" }
+            ] },
+            { text: "回顾过去的一年，你更满意——", options: [
+                { text: "在某件事上取得了扎实进步", flower: "山茶" },
+                { text: "经历了丰富多样的体验", flower: "石榴" },
+                { text: "建立了几个重要的关系", flower: "桃花" },
+                { text: "保持了内心的平静与独立", flower: "水仙" }
+            ] },
+            // 水仙组
+            { text: "独处时，你通常感到——", options: [
+                { text: "充电恢复，享受一个人的丰盈", flower: "水仙" },
+                { text: "有些无聊，想找人聊聊", flower: "桃花" },
+                { text: "思绪纷飞，需要整理沉淀", flower: "荷花" },
+                { text: "趁机完成待办事项", flower: "葵花" }
+            ] },
+            { text: "你更认同——", options: [
+                { text: "凌波仙子，孤芳自赏亦自足", flower: "水仙" },
+                { text: "花要叶扶，人要人帮", flower: "杏花" },
+                { text: "独乐乐不如众乐乐", flower: "桃花" },
+                { text: "君子和而不同", flower: "菊花" }
+            ] },
+            { text: "周末理想状态是——", options: [
+                { text: "独自看书、创作、思考", flower: "水仙" },
+                { text: "与好友聚会，分享近况", flower: "桃花" },
+                { text: "参加有意义的社会活动", flower: "葵花" },
+                { text: "随性而为，不刻意安排", flower: "芙蓉" }
+            ] }
+        ];
+
+        // 十二花神顺序
+        const flowerOrder = ["梅花","杏花","桃花","牡丹","石榴","荷花","葵花","桂花","菊花","芙蓉","山茶","水仙"];
+
+        // 花神数据
+        const flowerDetails = {
+            "梅花": {
+                name: "梅花花神 · 江采萍",
+                icon: "🌸",
+                quote: "“冰雪林中著此身，不同桃李混芳尘”",
+                quoteSrc: "——王冕《白梅》",
+                desc: "你是寒冬中独自绽放的梅花，拥有罕见的坚韧与独立。在他人焦虑时保持清醒，在集体迷茫时坚守方向。",
+                powers: [
+                    "✅ 抗压能力MAX 在压力下反而更专注",
+                    "✅ 独处充电 孤独是你的能量来源",
+                    "✅ 长期专注 能深耕一件事直到突破"
+                ],
+                shadows: [
+                    "1. 过度独立：习惯独自承担，错过支持网络",
+                    "2. 情感隔离：用理性压抑感受，显得疏离",
+                    "3. 固执己见：坚持方向但可能忽视新信息"
+                ],
+                growth: [
+                    "❄️ 试试：本周主动向一个人表达“我需要帮助”",
+                    "❄️ 试试：记录情绪日记，而不只是待办清单",
+                    "❄️ 试试：在坚持与灵活之间，找到平衡点"
+                ],
+                group: "梅花社",
+                percent: "8%",
+                desc1: "是稀缺的“定海神针”",
+                readings: [
+                    "《梅花易数》：你的决策风格与古代智者相通",
+                    "《内向者优势》：独处不是缺陷，是天赋"
+                ],
+                bg: "linear-gradient(145deg, #f0dbd1, #dcc1b2)"
+            },
+            "杏花": {
+                name: "杏花花神 · 杨玉环",
+                icon: "🌺",
+                quote: "“春色满园关不住，一枝红杏出墙来”",
+                quoteSrc: "——叶绍翁《游园不值》",
+                desc: "你是早春最先感知温度的杏花，拥有细腻的情感雷达。他人的喜怒哀乐，在你这里都有回响。",
+                powers: [
+                    "✅ 共情能力MAX 能感知未被言说的情绪",
+                    "✅ 关系粘合剂 让周围人感到被理解",
+                    "✅ 审美敏感 对氛围、细节有天然觉察"
+                ],
+                shadows: [
+                    "1. 情绪过载：吸收太多他人情绪，耗尽自己",
+                    "2. 边界模糊：过度卷入，难以说“不”",
+                    "3. 回避冲突：为维护和谐，压抑真实需求"
+                ],
+                growth: [
+                    "🌸 试试：每天设定“情绪隔离时间”，只关注自己",
+                    "🌸 试试：练习说：“我理解你，同时我需要……”",
+                    "🌸 试试：把敏感用于创作，而非仅用于共情"
+                ],
+                group: "杏花社",
+                percent: "15%",
+                desc1: "是珍贵的“情绪翻译官”",
+                readings: [],
+                bg: "linear-gradient(145deg, #f7e0da, #edc9bc)"
+            },
+            "桃花": {
+                name: "桃花花神 · 息夫人",
+                icon: "🌸",
+                quote: "“桃之夭夭，灼灼其华”",
+                quoteSrc: "——《诗经·周南》",
+                desc: "你是春日最热烈的桃花，拥有点燃他人的魔力。你的存在本身，就是一场小型庆典。",
+                powers: [
+                    "✅ 社交启动 能快速建立连接，打破僵局",
+                    "✅ 情绪感染 乐观能量带动周围氛围",
+                    "✅ 机会捕捉 对可能性保持敏锐嗅觉"
+                ],
+                shadows: [
+                    "1. 关系浮泛：广度代替深度，难以维持长期友谊",
+                    "2. 回避独处：安静时刻感到焦虑，不断寻求刺激",
+                    "3. 冲动决策：被热情驱动，忽视风险评估"
+                ],
+                growth: [
+                    "🌸 试试：本周与一位老朋友进行深度对话，不发展新关系",
+                    "🌸 试试：设定“独处挑战”，从15分钟开始",
+                    "🌸 试试：热情之前，先问自己：“这是谁的期待？”"
+                ],
+                group: "桃花社",
+                percent: "18%",
+                desc1: "是活跃的“连接枢纽”",
+                readings: [],
+                bg: "linear-gradient(145deg, #fbdcd3, #f6c0b2)"
+            },
+            "牡丹": {
+                name: "牡丹花神 · 杨玉环",
+                icon: "🌷",
+                quote: "“唯有牡丹真国色，花开时节动京城”",
+                quoteSrc: "——刘禹锡《赏牡丹》",
+                desc: "你是花中之王的牡丹，拥有与生俱来的存在感。你的光芒不需要证明，只需要绽放。",
+                powers: [
+                    "✅ 自我确信 内在价值感稳定，不易被否定动摇",
+                    "✅ 影响感召 能带动他人相信共同愿景",
+                    "✅ 敢于竞争 在压力场合反而表现更佳"
+                ],
+                shadows: [
+                    "1. 光芒压迫：无意识中让周围人感到自卑",
+                    "2. 脆弱羞耻：难以展示不完美，维护形象疲惫",
+                    "3. 急于求成：追求可见成就，忽视深层成长"
+                ],
+                growth: [
+                    "🌺 试试：本周主动分享一个失败经历，而非成功案例",
+                    "🌺 试试：询问他人感受：“我的方式有让你不舒服吗？”",
+                    "🌺 试试：定义属于自己的成功，而非社会标准"
+                ],
+                group: "牡丹社",
+                percent: "12%",
+                desc1: "是天然的“舞台中心”",
+                readings: [],
+                bg: "linear-gradient(145deg, #f3d5c8, #e6bba8)"
+            },
+            "石榴": {
+                name: "石榴花神 · 公孙氏",
+                icon: "🏵️",
+                quote: "“五月榴花照眼明，枝间时见子初成”",
+                quoteSrc: "——韩愈《题榴花》",
+                desc: "你是盛夏最耀眼的石榴，拥有喷涌的创造能量。你的生命状态，就是持续的创新与表达。",
+                powers: [
+                    "✅ 灵感丰沛 创意源源不断，享受头脑风暴",
+                    "✅ 表达欲望 有强烈的分享和展示冲动",
+                    "✅ 跨界连接 能把不相关的事物创造性联结"
+                ],
+                shadows: [
+                    "1. 完成困难：想法太多，难以坚持到底",
+                    "2. 分散精力：同时推进多件事，都浅尝辄止",
+                    "3. 情绪波动：依赖灵感，低谷期自我怀疑"
+                ],
+                growth: [
+                    "🌿 试试：选择最重要的一个想法，设定“完成而非完美”期限",
+                    "🌿 试试：建立“灵感银行”，记录但不立即执行所有想法",
+                    "🌿 试试：设计日常创作仪式，降低对灵感的依赖"
+                ],
+                group: "石榴社",
+                percent: "10%",
+                desc1: "是活跃的“创意引擎”",
+                readings: [],
+                bg: "linear-gradient(145deg, #fbd7c8, #efb49c)"
+            },
+            "荷花": {
+                name: "荷花花神 · 西施",
+                icon: "🪷",
+                quote: "“出淤泥而不染，濯清涟而不妖”",
+                quoteSrc: "——周敦颐《爱莲说》",
+                desc: "你是池塘中静立的荷花，拥有罕见的内在秩序。喧嚣在外，而你自有节奏。",
+                powers: [
+                    "✅ 深度思考 能穿透表象，触及问题核心",
+                    "✅ 价值坚守 在混乱中保持原则和底线",
+                    "✅ 情绪调节 天然具备平复焦虑的能力"
+                ],
+                shadows: [
+                    "1. 过度疏离：为保持独立，回避必要的连接",
+                    "2. 决策迟缓：追求完美方案，错失行动时机",
+                    "3. 精神洁癖：对他人和世界有过高期待"
+                ],
+                growth: [
+                    "🪷 试试：本周主动参与一个你并不认同的群体活动",
+                    "🪷 试试：设定“足够好”标准，而非“完美”标准",
+                    "🪷 试试：理解“淤泥”也是养分，而非仅是要超越的"
+                ],
+                group: "荷花社",
+                percent: "11%",
+                desc1: "是稀缺的“精神锚点”",
+                readings: [],
+                bg: "linear-gradient(145deg, #deeae5, #c9dbd2)"
+            },
+            "葵花": {
+                name: "葵花花神 · 未知",
+                icon: "🌻",
+                quote: "“更无柳絮因风起，惟有葵花向日倾”",
+                quoteSrc: "——司马光《客中初夏》",
+                desc: "你是永远向阳的葵花，拥有坚定的目标感。一旦确定方向，九死不悔。",
+                powers: [
+                    "✅ 目标驱动 能长期聚焦，抵御短期诱惑",
+                    "✅ 执行坚韧 遇到困难时持续投入资源",
+                    "✅ 正向归因 把挫折视为必要过程"
+                ],
+                shadows: [
+                    "1. 路径依赖：坚持可能变成固执，忽视新信息",
+                    "2. 沉没成本：为证明选择正确，持续错误投入",
+                    "3. 忽视关系：目标优先，让身边人感到被冷落"
+                ],
+                growth: [
+                    "🌻 试试：本周设定一个“方向调整日”，重新审视目标",
+                    "🌻 试试：询问反对意见：“如果我错了，最可能错在哪？”",
+                    "🌻 试试：把关系维护也纳入“目标清单”"
+                ],
+                group: "葵花社",
+                percent: "9%",
+                desc1: "是可靠的“目标达成者”",
+                readings: [],
+                bg: "linear-gradient(145deg, #f7e6c4, #eed9a7)"
+            },
+            "桂花": {
+                name: "桂花花神 · 绿珠",
+                icon: "🍂",
+                quote: "“何须浅碧深红色，自是花中第一流”",
+                quoteSrc: "——李清照《鹧鸪天·桂花》",
+                desc: "你是中秋暗香的桂花，拥有厚积薄发的智慧。你的价值，时间自会证明。",
+                powers: [
+                    "✅ 审慎观察 在行动前充分收集信息",
+                    "✅ 精准输出 一旦开口，往往切中要害",
+                    "✅ 长期信任 建立的友谊深度而非广度"
+                ],
+                shadows: [
+                    "1. 过度准备：永远在准备，迟迟不开始",
+                    "2. 被动等待：相信“是金子总会发光”，错过机会",
+                    "3. 社交消耗：社交场合后需要长时间恢复"
+                ],
+                growth: [
+                    "🍂 试试：本周主动争取一个展示机会，而非等待被邀请",
+                    "🍂 试试：设定“准备截止时间”，强制启动",
+                    "🍂 试试：练习elevator pitch，3秒说明价值"
+                ],
+                group: "桂花社",
+                percent: "13%",
+                desc1: "是珍贵的“深度贡献者”",
+                readings: [],
+                bg: "linear-gradient(145deg, #f6e0c0, #e8c59a)"
+            },
+            "菊花": {
+                name: "菊花花神 · 陶渊明",
+                icon: "🌼",
+                quote: "“宁可枝头抱香死，何曾吹落北风中”",
+                quoteSrc: "——郑思肖《寒菊》",
+                desc: "你是深秋傲霜的菊花，拥有不可妥协的原则。宁为玉碎，不为瓦全。",
+                powers: [
+                    "✅ 原则清晰 在复杂情境中快速判断对错",
+                    "✅ 抗压正直 压力下仍能坚守底线",
+                    "✅ 精神独立 不依附于外界认可而存在"
+                ],
+                shadows: [
+                    "1. 非黑即白：难以接纳灰色地带，关系僵硬",
+                    "2. 道德疲劳：持续坚守消耗巨大，易burnout",
+                    "3. 孤立风险：原则成为壁垒，错过合作可能"
+                ],
+                growth: [
+                    "🌼 试试：本周找到一个“原则”的弹性应用场景",
+                    "🌼 试试：理解“妥协”与“背叛”的区别",
+                    "🌼 试试：选择最重要的3条原则，其他的可以协商"
+                ],
+                group: "菊花社",
+                percent: "7%",
+                desc1: "是稀缺的“道德指南针”",
+                readings: [],
+                bg: "linear-gradient(145deg, #efdecb, #e0c5a5)"
+            },
+            "芙蓉": {
+                name: "芙蓉花神 · 貂蝉",
+                icon: "🏵️",
+                quote: "“千林扫作一番黄，只有芙蓉独自芳”",
+                quoteSrc: "——苏轼《和陈述古拒霜花》",
+                desc: "你是应变自如的木芙蓉，拥有环境适应的弹性。一日三变，是你的生存智慧。",
+                powers: [
+                    "✅ 情境敏感 能快速读取环境需求并调整",
+                    "✅ 角色切换 在不同场合展现合适面向",
+                    "✅ 冲突调解 理解多方立场，寻找折中"
+                ],
+                shadows: [
+                    "1. 自我模糊：适应太多，忘记自己原本的样子",
+                    "2. 承诺困难：保持开放，难以做出坚定选择",
+                    "3. 深度不足：广泛连接，但缺乏核心认同"
+                ],
+                growth: [
+                    "🌺 试试：本周设定一个“不妥协”事项，练习坚定",
+                    "🌺 试试：写下“我是谁”的10个定义，寻找恒定项",
+                    "🌺 试试：选择一个方向，承诺深耕至少6个月"
+                ],
+                group: "芙蓉社",
+                percent: "14%",
+                desc1: "是灵活的“系统调节者”",
+                readings: [],
+                bg: "linear-gradient(145deg, #f5d6cd, #eab7aa)"
+            },
+            "山茶": {
+                name: "山茶花神 · 王昭君",
+                icon: "🌺",
+                quote: "“东园三日雨兼风，桃李飘零扫地空。惟有山茶偏耐久，绿丛又放数枝红。”",
+                quoteSrc: "——陆游《山茶》",
+                desc: "你是耐冬守岁的山茶，拥有长期主义的定力。慢，是你的速度；久，是你的承诺。",
+                powers: [
+                    "✅ 持续投入 能在单一领域积累复利效应",
+                    "✅ 延迟满足 抵御短期诱惑，专注长期目标",
+                    "✅ 情绪稳定 波动较小，给人可靠感"
+                ],
+                shadows: [
+                    "1. 变化恐惧：对不确定性感到焦虑，回避新可能",
+                    "2. 沉没成本：为已投入时间，持续错误坚持",
+                    "3. 当下缺失：永远为未来准备，忽视眼前生活"
+                ],
+                growth: [
+                    "🌿 试试：本周尝试一件“无长期价值”的享乐活动",
+                    "🌿 试试：设定“止损点”，练习适时放弃",
+                    "🌿 试试：把“过程”本身也定义为成功的一部分"
+                ],
+                group: "山茶社",
+                percent: "10%",
+                desc1: "是可靠的“时间合伙人”",
+                readings: [],
+                bg: "linear-gradient(145deg, #f0d4c6, #dfaf9a)"
+            },
+            "水仙": {
+                name: "水仙花神 · 宓妃",
+                icon: "🌼",
+                quote: "“凌波仙子生尘袜，水上轻盈步微月”",
+                quoteSrc: "——黄庭坚《王充道送水仙花五十支》",
+                desc: "你是清供案头的水仙，拥有自足的精神世界。一泓清水，便是一方天地。",
+                powers: [
+                    "✅ 独处丰盈 能从内在世界获得充足能量",
+                    "✅ 深度思考 享受抽象概念和哲学追问",
+                    "✅ 创造表达 通过艺术/文字表达内在体验"
+                ],
+                shadows: [
+                    "1. 社交回避：过度独处导致孤立，错失连接",
+                    "2. 现实脱节：沉浸内在世界，忽视实际事务",
+                    "3. 自我封闭：把“独立”当作防御，拒绝支持"
+                ],
+                growth: [
+                    "🌼 试试：本周主动发起一次线下见面，而非线上交流",
+                    "🌼 试试：设定“最小社交配额”，每月至少2次",
+                    "🌼 试试：找到一个能听懂你“内在语言”的人"
+                ],
+                group: "水仙社",
+                percent: "8%",
+                desc1: "是稀缺的“内在探索者”",
+                readings: [],
+                bg: "linear-gradient(145deg, #daeae5, #c5dbd4)"
+            }
+        };
+
+        // 答案数组
+        let answers = new Array(36).fill(null);
+        let currentIdx = 0;
+
+        // DOM
+        const progressEl = document.getElementById('progressText');
+        const questionEl = document.getElementById('questionDisplay');
+        const optionsEl = document.getElementById('optionsContainer');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const viewBtn = document.getElementById('viewResultBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const quizSec = document.getElementById('quizSection');
+        const resultSec = document.getElementById('resultSection');
+        const resultContent = document.getElementById('resultContent');
+
+        function renderQuestion(index) {
+            const q = questions[index];
+            progressEl.innerText = `第 ${index+1} / 36 题`;
+            questionEl.innerText = q.text;
+
+            let html = '';
+            q.options.forEach(opt => {
+                const selected = answers[index] === opt.flower ? 'selected' : '';
+                html += `<div class="option-btn ${selected}" data-flower="${opt.flower}"><i class="fa-regular fa-circle"></i> ${opt.text}</div>`;
+            });
+            optionsEl.innerHTML = html;
+
+            document.querySelectorAll('.option-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const flower = btn.dataset.flower;
+                    optionsEl.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
+                    btn.classList.add('selected');
+                    answers[index] = flower;
+                    updateNavButtons();
+                });
+            });
+            updateNavButtons();
+        }
+
+        function updateNavButtons() {
+            prevBtn.disabled = (currentIdx === 0);
+            nextBtn.disabled = (currentIdx === 35);
+            const allAnswered = answers.every(a => a != null);
+            viewBtn.disabled = !allAnswered;
+        }
+
+        prevBtn.addEventListener('click', () => {
+            if (currentIdx > 0) {
+                currentIdx--;
+                renderQuestion(currentIdx);
+            }
+        });
+
+        nextBtn.addEventListener('click', () => {
+            if (currentIdx < 35) {
+                currentIdx++;
+                renderQuestion(currentIdx);
+            }
+        });
+
+        function calculateTopFlower() {
+            const scores = {};
+            flowerOrder.forEach(f => scores[f] = 0);
+            answers.forEach(f => { if (f && scores.hasOwnProperty(f)) scores[f]++; });
+
+            let maxScore = -1;
+            let bestFlower = flowerOrder[0];
+            for (let f of flowerOrder) {
+                if (scores[f] > maxScore) {
+                    maxScore = scores[f];
+                    bestFlower = f;
+                }
+            }
+            return bestFlower;
+        }
+
+        function buildResultHTML(flower) {
+            const d = flowerDetails[flower];
+            if (!d) return '';
+
+            let html = `
+                <div class="flower-badge">
+                    <div class="flower-icon-small">${d.icon}</div>
+                    <div class="flower-name">${d.name}</div>
+                </div>
+                <div class="result-quote">${d.quote}<br><small>${d.quoteSrc}</small></div>
+                <div class="section-text">${d.desc}</div>
+                
+                <div class="result-section">
+                    <div class="section-title">【你的超能力】</div>
+                    <ul class="section-list">
+            `;
+            d.powers.forEach(p => { html += `<li><i class="fa-regular fa-circle-check"></i> ${p}</li>`; });
+            html += `</ul></div>`;
+
+            html += `<div class="result-section"><div class="section-title">【花神阴影】</div><ul class="section-list">`;
+            d.shadows.forEach(s => { html += `<li><i class="fa-regular fa-circle-exclamation"></i> ${s}</li>`; });
+            html += `</ul></div>`;
+
+            html += `<div class="result-section"><div class="section-title">【花神成长指南】</div><div class="growth-box">`;
+            d.growth.forEach(g => { html += `<p><i class="fa-regular fa-snowflake"></i> ${g}</p>`; });
+            html += `</div></div>`;
+
+            html += `<div class="result-section"><div class="section-title">【加入${d.group}】</div>`;
+            html += `<div class="qr-sim"><i class="fa-regular fa-qrcode"></i></div>`;
+            html += `<div class="stats">扫码进入你的花神同伴群，找到同类。你们占总人口的${d.percent}，${d.desc1}</div>`;
+
+            if (d.readings && d.readings.length > 0) {
+                html += `<div class="footer-links">【延伸阅读】<br>`;
+                d.readings.forEach(r => { html += `📚 ${r}<br>`; });
+                html += `</div>`;
+            }
+
+            return html;
+        }
+
+        function showResult() {
+            const topFlower = calculateTopFlower();
+            const detail = flowerDetails[topFlower];
+            resultContent.innerHTML = buildResultHTML(topFlower);
+            resultSec.style.backgroundImage = detail.bg;
+
+            quizSec.classList.add('hidden');
+            resultSec.classList.remove('hidden');
+        }
+
+        viewBtn.addEventListener('click', () => {
+            if (answers.every(a => a != null)) showResult();
+            else alert('请先回答完所有36道题目，再召唤你的守护花神 ✿');
+        });
+
+        resetBtn.addEventListener('click', () => {
+            answers = new Array(36).fill(null);
+            currentIdx = 0;
+            renderQuestion(0);
+            quizSec.classList.remove('hidden');
+            resultSec.classList.add('hidden');
+        });
+
+        renderQuestion(0);
+    })();
+</script>
+</body>
+</html>
